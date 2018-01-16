@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/White">
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <EditText
+            android:id="@+id/txtSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/btnSearch"
+            android:layout_toStartOf="@+id/btnSearch"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="textPersonName" />
+
+        <Button
+
+            android:id="@+id/btnSearch"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/txtSearch"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_weight="1"
+            android:text="Search"
+            android:textSize="8sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/listVideos"
+        android:layout_width="match_parent"
+        android:layout_height="450dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_weight="1"
+        android:dividerHeight="@dimen/mp.divider.line"
+        android:scrollbars="horizontal">
+
+    </ListView>
+
+</LinearLayout>

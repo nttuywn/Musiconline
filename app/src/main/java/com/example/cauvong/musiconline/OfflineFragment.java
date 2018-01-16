@@ -145,6 +145,9 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
                         imgNowPlaybtm2.setImageBitmap(ga.getAlbumart(Integer.parseInt(song.getImage())));
                         txtNowPlaybtm2.setText(song.getTitle());
                         txtArtistPlaying.setText(song.getArtist());
+                        imgNowPlaybtm.setImageBitmap(ga.getAlbumart(Integer.parseInt(song.getImage())));
+                        txtNowPlaybtm.setText(song.getTitle());
+                        txtArtistPlaying.setText(song.getArtist());
                         CustomList adapter = new CustomList(getActivity(), R.layout.list_single, listSong);
                         listView.setAdapter(adapter);
                     }
@@ -161,22 +164,34 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                listSong = listAllSong;
+                Song song = listAllSong.get(position);
                 play(position);
-                Song song = listSong.get(position);
                 imgNowPlaybtm.setImageBitmap(ga.getAlbumart(Integer.parseInt(song.getImage())));
                 txtNowPlaybtm.setText(song.getTitle());
                 txtArtistPlaying.setText(song.getArtist());
+                imgNowPlaybtm2.setImageBitmap(ga.getAlbumart(Integer.parseInt(song.getImage())));
+                txtNowPlaybtm2.setText(song.getTitle());
+                txtArtistPlaying.setText(song.getArtist());
+                CustomList adapter = new CustomList(getActivity(), R.layout.list_single, listSong);
+                listView.setAdapter(adapter);
             }
         });
 
         listView2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                listSong = listAllSong;
+                Song song = listAllSong.get(position);
                 play(position);
-                Song song = listSong.get(position);
                 imgNowPlaybtm.setImageBitmap(ga.getAlbumart(Integer.parseInt(song.getImage())));
                 txtNowPlaybtm.setText(song.getTitle());
                 txtArtistPlaying.setText(song.getArtist());
+                imgNowPlaybtm2.setImageBitmap(ga.getAlbumart(Integer.parseInt(song.getImage())));
+                txtNowPlaybtm2.setText(song.getTitle());
+                txtArtistPlaying.setText(song.getArtist());
+                CustomList adapter = new CustomList(getActivity(), R.layout.list_single, listSong);
+                listView.setAdapter(adapter);
             }
         });
 

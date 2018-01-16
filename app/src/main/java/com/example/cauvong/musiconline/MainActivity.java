@@ -69,13 +69,15 @@ public class MainActivity extends AppCompatActivity
             OnlineLibraryFragment fragment = new OnlineLibraryFragment();
             FragmentManager manager = getSupportFragmentManager();
             FragmentTransaction transaction = manager.beginTransaction();
-            transaction.addToBackStack("back");
-            transaction.add(R.id.fr_content_main, fragment);
+            transaction.add(R.id.fr_content_main, fragment,"online");
             transaction.commit();
+//            Intent intentToA = new Intent(this, Youtube.class);
+//            startActivity(intentToA);
         } else if (id == R.id.my_library) {
             FragmentManager manager = getSupportFragmentManager();
             FragmentTransaction transaction = manager.beginTransaction();
             if (getSupportFragmentManager().findFragmentByTag("mylibrary") != null) {
+                transaction.hide(getSupportFragmentManager().findFragmentByTag("online"));
                 transaction.hide(getSupportFragmentManager().findFragmentByTag("playing"));
                 transaction.show(getSupportFragmentManager().findFragmentByTag("mylibrary"));
             } else {
@@ -89,6 +91,8 @@ public class MainActivity extends AppCompatActivity
             FragmentManager manager = getSupportFragmentManager();
             FragmentTransaction transaction = manager.beginTransaction();
             if (getSupportFragmentManager().findFragmentByTag("playing") != null) {
+                transaction.hide(getSupportFragmentManager().findFragmentByTag("mylibrary"));
+                transaction.hide(getSupportFragmentManager().findFragmentByTag("online"));
                 transaction.show(getSupportFragmentManager().findFragmentByTag("playing"));
             } else {
                 OfflineFragment fragment1 = new OfflineFragment();
