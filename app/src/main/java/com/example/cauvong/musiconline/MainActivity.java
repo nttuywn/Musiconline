@@ -36,10 +36,12 @@ public class MainActivity extends AppCompatActivity
 
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
+        OnlineLibraryFragment fragment = new OnlineLibraryFragment();
+        transaction.add(R.id.fr_content_main, fragment,"online");
         AlbumSongFragment alf = new AlbumSongFragment();
         transaction.add(R.id.fr_content_main, alf, "albumsong");
-        MyLibraryFragment fragment = new MyLibraryFragment();
-        transaction.add(R.id.fr_content_main, fragment, "mylibrary");
+        MyLibraryFragment fragment1 = new MyLibraryFragment();
+        transaction.add(R.id.fr_content_main, fragment1, "mylibrary");
         OfflineFragment of = new OfflineFragment();
         transaction.add(R.id.fr_content_main, of, "playing");
         transaction.commitNow();
@@ -66,10 +68,18 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.online_library) {
-            OnlineLibraryFragment fragment = new OnlineLibraryFragment();
             FragmentManager manager = getSupportFragmentManager();
             FragmentTransaction transaction = manager.beginTransaction();
-            transaction.add(R.id.fr_content_main, fragment,"online");
+            if (getSupportFragmentManager().findFragmentByTag("online") != null) {
+                transaction.hide(getSupportFragmentManager().findFragmentByTag("albumsong"));
+                transaction.hide(getSupportFragmentManager().findFragmentByTag("mylibrary"));
+                transaction.hide(getSupportFragmentManager().findFragmentByTag("playing"));
+                transaction.show(getSupportFragmentManager().findFragmentByTag("online"));
+            } else {
+                OnlineLibraryFragment fragment = new OnlineLibraryFragment();
+                transaction.add(R.id.fr_content_main, fragment, "online");
+            }
+
             transaction.commit();
 //            Intent intentToA = new Intent(this, Youtube.class);
 //            startActivity(intentToA);
@@ -77,6 +87,7 @@ public class MainActivity extends AppCompatActivity
             FragmentManager manager = getSupportFragmentManager();
             FragmentTransaction transaction = manager.beginTransaction();
             if (getSupportFragmentManager().findFragmentByTag("mylibrary") != null) {
+                transaction.hide(getSupportFragmentManager().findFragmentByTag("albumsong"));
                 transaction.hide(getSupportFragmentManager().findFragmentByTag("online"));
                 transaction.hide(getSupportFragmentManager().findFragmentByTag("playing"));
                 transaction.show(getSupportFragmentManager().findFragmentByTag("mylibrary"));
@@ -91,6 +102,7 @@ public class MainActivity extends AppCompatActivity
             FragmentManager manager = getSupportFragmentManager();
             FragmentTransaction transaction = manager.beginTransaction();
             if (getSupportFragmentManager().findFragmentByTag("playing") != null) {
+                transaction.hide(getSupportFragmentManager().findFragmentByTag("albumsong"));
                 transaction.hide(getSupportFragmentManager().findFragmentByTag("mylibrary"));
                 transaction.hide(getSupportFragmentManager().findFragmentByTag("online"));
                 transaction.show(getSupportFragmentManager().findFragmentByTag("playing"));
