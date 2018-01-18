@@ -38,7 +38,6 @@ import java.util.HashMap;
 public class OnlineLibraryFragment extends Fragment {
 
     private String apiKey = "AIzaSyBCepNUGcqELdmLdgOgaUri_kcQ7vXeziQ";
-    private String keyWord = "";
     private String url = "";
     private ListView videoListview;
     private ArrayList<VideoYoutube> listVideos;
@@ -64,7 +63,8 @@ public class OnlineLibraryFragment extends Fragment {
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                keyWord = txtSearch.getText().toString();
+                StringBuffer keyWord = new StringBuffer(txtSearch.getText().toString());
+                keyWord = convertString(keyWord);
                 url = "https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + keyWord + "&type=video&key=" + apiKey + "&maxResults=10";
                 videoListview = (ListView) getView().findViewById(R.id.listVideos);
                 listVideos = new ArrayList<>();
@@ -86,13 +86,12 @@ public class OnlineLibraryFragment extends Fragment {
         });
     }
 
-    public void getJsonYoutube(String url){
+    public void getJsonYoutube(final String url){
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-
                         try {
                             JSONArray jsonItems = response.getJSONArray("items");
                             String title = "";
@@ -131,6 +130,15 @@ public class OnlineLibraryFragment extends Fragment {
                 }
         );
         requestQueue.add(jsonObjectRequest);
+    }
+
+    private StringBuffer convertString(StringBuffer keyWord){
+        for(int i = 0; i < keyWord.length(); i++){
+            if(keyWord.codePointAt(i) == 32){
+                keyWord.setCharAt(i,'_');
+            }
+        }
+        return keyWord;
     }
 
 }
