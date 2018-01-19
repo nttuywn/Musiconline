@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,11 +9,11 @@
     <ListView
         android:id="@+id/listAlbumSongs"
         android:layout_width="match_parent"
-        android:layout_height="450dp"
+        android:layout_height="0dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_weight="1"
+        android:layout_weight="10"
         android:dividerHeight="@dimen/mp.divider.line"
         android:scrollbars="horizontal">
 
@@ -23,35 +22,34 @@
     <LinearLayout
         android:id="@+id/btnNowPlaybtm"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="4"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:paddingBottom="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="5dp"
         android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/imgNowPlaybtm2"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="2"
-            android:paddingBottom="40dp"
-            android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:paddingTop="10dp"
             android:scaleType="fitStart" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="7"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/txtNowPlaybtm2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:paddingTop="10dp"
                 android:text="-------"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/txtArtistPlaying2"
@@ -61,7 +59,7 @@
                 android:paddingTop="5dp"
                 android:text="--------"
                 android:textSize="12sp"
-                tools:text="--------" />
+                tools:text="--------"/>
         </LinearLayout>
 
     </LinearLayout>

@@ -36,14 +36,14 @@ public class MainActivity extends AppCompatActivity
 
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
-        OnlineLibraryFragment fragment = new OnlineLibraryFragment();
-        transaction.add(R.id.fr_content_main, fragment,"online");
-        AlbumSongFragment alf = new AlbumSongFragment();
-        transaction.add(R.id.fr_content_main, alf, "albumsong");
-        MyLibraryFragment fragment1 = new MyLibraryFragment();
-        transaction.add(R.id.fr_content_main, fragment1, "mylibrary");
-        OfflineFragment of = new OfflineFragment();
-        transaction.add(R.id.fr_content_main, of, "playing");
+        OnlineLibraryFragment onlineLibraryFragment = new OnlineLibraryFragment();
+        transaction.add(R.id.fr_content_main, onlineLibraryFragment,"online");
+        AlbumSongFragment albumSongFragment = new AlbumSongFragment();
+        transaction.add(R.id.fr_content_main, albumSongFragment, "albumsong");
+        MyLibraryFragment myLibraryFragment = new MyLibraryFragment();
+        transaction.add(R.id.fr_content_main, myLibraryFragment, "mylibrary");
+        OfflineFragment offlineFragment = new OfflineFragment();
+        transaction.add(R.id.fr_content_main, offlineFragment, "playing");
         transaction.commitNow();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);

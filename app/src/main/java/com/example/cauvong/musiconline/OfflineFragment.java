@@ -58,8 +58,9 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
     private TextView mTvTimeBegin, mTvTimeEnd;
     private Handler mHandler = new Handler();
     private int currentId = 0;
-    private ListView listView;
-    private ListView listView2;
+    private ListView listNowPlay;
+    private ListView listSongs;
+    private ListView listAlbumSong;
     private ImageView imgNowPlaybtm;
     private TextView txtNowPlaybtm;
     private ImageView imgNowPlaybtm2;
@@ -68,7 +69,6 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
     private TextView txtArtistPlaying;
     private TextView txtArtistPlaying2;
     private GridView gridView;
-    private ListView listAlbumSong;
 
 
     @Nullable
@@ -111,8 +111,9 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
         mBtnNext = (Button) getView().findViewById(R.id.btn_next);
         mTvTimeBegin = (TextView) getView().findViewById(R.id.tv_time_run);
         mTvTimeEnd = (TextView) getView().findViewById(R.id.tv_time_total);
-        listView = (ListView) getView().findViewById(R.id.listNowPlay);
-        listView2 = (ListView) getActivity().findViewById(R.id.listSongs);
+        listNowPlay = (ListView) getActivity().findViewById(R.id.listNowPlay);
+        listSongs = (ListView) getActivity().findViewById(R.id.listSongs);
+        listAlbumSong = (ListView) getActivity().findViewById(R.id.listAlbumSongs);
         imgNowPlaybtm = (ImageView) getActivity().findViewById(R.id.imgNowPlaybtm);
         txtNowPlaybtm = (TextView) getActivity().findViewById(R.id.txtNowPlaybtm);
         imgNowPlaybtm2 = (ImageView) getActivity().findViewById(R.id.imgNowPlaybtm2);
@@ -120,7 +121,6 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
         txtArtistPlaying = (TextView) getActivity().findViewById(R.id.txtArtistPlaying);
         txtArtistPlaying2 = (TextView) getActivity().findViewById(R.id.txtArtistPlaying2);
         gridView = (GridView) getActivity().findViewById(R.id.gridALbums);
-        listAlbumSong = (ListView) getActivity().findViewById(R.id.listAlbumSongs);
     }
 
     private void initComponents() {
@@ -144,12 +144,12 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
                         Song song = listSong.get(position);
                         imgNowPlaybtm2.setImageBitmap(ga.getAlbumart(Integer.parseInt(song.getImage())));
                         txtNowPlaybtm2.setText(song.getTitle());
-                        txtArtistPlaying.setText(song.getArtist());
+                        txtArtistPlaying2.setText(song.getArtist());
                         imgNowPlaybtm.setImageBitmap(ga.getAlbumart(Integer.parseInt(song.getImage())));
                         txtNowPlaybtm.setText(song.getTitle());
                         txtArtistPlaying.setText(song.getArtist());
                         CustomList adapter = new CustomList(getActivity(), R.layout.list_single, listSong);
-                        listView.setAdapter(adapter);
+                        listNowPlay.setAdapter(adapter);
                     }
                 });
                 listAlbumSong.setAdapter(adapterAS);
@@ -161,7 +161,7 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
             }
         });
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listNowPlay.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 listSong = listAllSong;
@@ -172,13 +172,13 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
                 txtArtistPlaying.setText(song.getArtist());
                 imgNowPlaybtm2.setImageBitmap(ga.getAlbumart(Integer.parseInt(song.getImage())));
                 txtNowPlaybtm2.setText(song.getTitle());
-                txtArtistPlaying.setText(song.getArtist());
+                txtArtistPlaying2.setText(song.getArtist());
                 CustomList adapter = new CustomList(getActivity(), R.layout.list_single, listSong);
-                listView.setAdapter(adapter);
+                listNowPlay.setAdapter(adapter);
             }
         });
 
-        listView2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listSongs.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 listSong = listAllSong;
@@ -189,9 +189,9 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
                 txtArtistPlaying.setText(song.getArtist());
                 imgNowPlaybtm2.setImageBitmap(ga.getAlbumart(Integer.parseInt(song.getImage())));
                 txtNowPlaybtm2.setText(song.getTitle());
-                txtArtistPlaying.setText(song.getArtist());
+                txtArtistPlaying2.setText(song.getArtist());
                 CustomList adapter = new CustomList(getActivity(), R.layout.list_single, listSong);
-                listView.setAdapter(adapter);
+                listSongs.setAdapter(adapter);
             }
         });
 
@@ -255,8 +255,8 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
             }
         });
 
-        listView.setAdapter(adapter);
-        listView2.setAdapter(adapter2);
+        listNowPlay.setAdapter(adapter);
+        listSongs.setAdapter(adapter2);
         gridView.setAdapter(gridAdapter);
 
 
