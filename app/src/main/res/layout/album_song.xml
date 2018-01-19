@@ -57,9 +57,9 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="20dp"
                 android:paddingTop="5dp"
-                android:text="--------"
+                android:text="@string/tab"
                 android:textSize="12sp"
-                tools:text="--------"/>
+                tools:text="@string/tab"/>
         </LinearLayout>
 
     </LinearLayout>
