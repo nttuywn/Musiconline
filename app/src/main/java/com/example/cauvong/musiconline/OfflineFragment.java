@@ -1,37 +1,22 @@
 package com.example.cauvong.musiconline;
 
-import android.Manifest;
-import android.app.Activity;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,8 +24,6 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -69,6 +52,8 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
     private TextView txtArtistPlaying;
     private TextView txtArtistPlaying2;
     private GridView gridView;
+    private TextView txtNotiSongName;
+    private ImageView imgNotiSongImg;
 
 
     @Nullable
@@ -100,8 +85,8 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
 
     private void findViews() {
         mSeek = (SeekBar) getView().findViewById(R.id.seekbar);
-        mBtnPlay = (Button) getView().findViewById(R.id.btn_play);
-        mBtnPause = (Button) getView().findViewById(R.id.btn_pause);
+        mBtnPlay = (Button) getView().findViewById(R.id.btn_noti_play);
+        mBtnPause = (Button) getView().findViewById(R.id.btn_noti_pause);
         mBtnRepeat = (Button) getView().findViewById(R.id.btn_repeat);
         mBtnRepeat1 = (Button) getView().findViewById(R.id.btn_repeat_1);
         mBtnRepeatAll = (Button) getView().findViewById(R.id.btn_repeat_all);
@@ -148,6 +133,7 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
                         imgNowPlaybtm.setImageBitmap(ga.getAlbumart(Integer.parseInt(song.getImage())));
                         txtNowPlaybtm.setText(song.getTitle());
                         txtArtistPlaying.setText(song.getArtist());
+                        NotificationGenerator.customNotification(getActivity(), song);
                         CustomList adapter = new CustomList(getActivity(), R.layout.list_single, listSong);
                         listNowPlay.setAdapter(adapter);
                     }
@@ -166,13 +152,15 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 listSong = listAllSong;
                 Song song = listAllSong.get(position);
+                Bitmap image = ga.getAlbumart(Integer.parseInt(song.getImage()));
                 play(position);
-                imgNowPlaybtm.setImageBitmap(ga.getAlbumart(Integer.parseInt(song.getImage())));
+                imgNowPlaybtm.setImageBitmap(image);
                 txtNowPlaybtm.setText(song.getTitle());
                 txtArtistPlaying.setText(song.getArtist());
-                imgNowPlaybtm2.setImageBitmap(ga.getAlbumart(Integer.parseInt(song.getImage())));
+                imgNowPlaybtm2.setImageBitmap(image);
                 txtNowPlaybtm2.setText(song.getTitle());
                 txtArtistPlaying2.setText(song.getArtist());
+                NotificationGenerator.customNotification(getActivity(), song);
                 CustomList adapter = new CustomList(getActivity(), R.layout.list_single, listSong);
                 listNowPlay.setAdapter(adapter);
             }
@@ -190,6 +178,7 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
                 imgNowPlaybtm2.setImageBitmap(ga.getAlbumart(Integer.parseInt(song.getImage())));
                 txtNowPlaybtm2.setText(song.getTitle());
                 txtArtistPlaying2.setText(song.getArtist());
+                NotificationGenerator.customNotification(getActivity(), song);
                 CustomList adapter = new CustomList(getActivity(), R.layout.list_single, listSong);
                 listSongs.setAdapter(adapter);
             }
@@ -371,10 +360,10 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_play:
+            case R.id.btn_noti_play:
                 playing();
                 break;
-            case R.id.btn_pause:
+            case R.id.btn_noti_pause:
                 pauseSong();
                 break;
             case R.id.btn_next:

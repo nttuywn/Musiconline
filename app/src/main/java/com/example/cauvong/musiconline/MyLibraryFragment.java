@@ -117,11 +117,6 @@ public class MyLibraryFragment extends Fragment {
         TabHost tabHost = (TabHost) getView().findViewById(R.id.tabML);
 
         tabHost.setup();
-        TabHost.TabSpec tab2 = tabHost.newTabSpec("t2");
-        tab2.setIndicator("Artists");
-        tab2.setContent(R.id.tabA);
-        tabHost.addTab(tab2);
-
         TabHost.TabSpec tab3 = tabHost.newTabSpec("t3");
         tab3.setIndicator("Albums");
         tab3.setContent(R.id.tabAlbums);

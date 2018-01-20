@@ -33,7 +33,7 @@
                 android:layout_alignLeft="@+id/btn_repeat_all"
                 android:layout_alignRight="@+id/btn_repeat_all"
                 android:layout_alignStart="@+id/btn_repeat_all"
-                android:layout_alignTop="@+id/btn_play"
+                android:layout_alignTop="@+id/btn_noti_play"
                 android:background="@drawable/ic_player_repeat_1"
                 android:visibility="invisible" />
 
@@ -55,8 +55,8 @@
                 android:layout_below="@+id/seekbar"
                 android:layout_marginEnd="29dp"
                 android:layout_marginRight="29dp"
-                android:layout_toLeftOf="@+id/btn_play"
-                android:layout_toStartOf="@+id/btn_play"
+                android:layout_toLeftOf="@+id/btn_noti_play"
+                android:layout_toStartOf="@+id/btn_noti_play"
                 android:background="@drawable/ic_player_prev" />
 
             <TextView
@@ -87,16 +87,16 @@
                 android:visibility="visible" />
 
             <Button
-                android:id="@+id/btn_play"
+                android:id="@+id/btn_noti_play"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:layout_alignBottom="@+id/btn_pause"
+                android:layout_alignBottom="@+id/btn_noti_pause"
                 android:layout_centerHorizontal="true"
                 android:background="@drawable/ic_player_play"
                 android:visibility="visible" />
 
             <Button
-                android:id="@+id/btn_pause"
+                android:id="@+id/btn_noti_pause"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_below="@+id/seekbar"
@@ -144,7 +144,7 @@
                 android:id="@+id/btn_repeat_all"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_alignBottom="@+id/btn_play"
+                android:layout_alignBottom="@+id/btn_noti_play"
                 android:layout_alignLeft="@+id/tv_time_total"
                 android:layout_alignStart="@+id/tv_time_total"
                 android:layout_below="@+id/seekbar"
@@ -159,8 +159,8 @@
                 android:layout_below="@+id/seekbar"
                 android:layout_marginLeft="26dp"
                 android:layout_marginStart="26dp"
-                android:layout_toEndOf="@+id/btn_play"
-                android:layout_toRightOf="@+id/btn_play"
+                android:layout_toEndOf="@+id/btn_noti_play"
+                android:layout_toRightOf="@+id/btn_noti_play"
                 android:background="@drawable/ic_player_next" />
         </RelativeLayout>
 

@@ -1,10 +1,12 @@
 package com.example.cauvong.musiconline;
 
+import java.io.Serializable;
+
 /**
  * Created by tus on 1/16/2018.
  */
 
-public class VideoYoutube {
+public class VideoYoutube implements Serializable{
 
     private String title;
     private String thumbnails;

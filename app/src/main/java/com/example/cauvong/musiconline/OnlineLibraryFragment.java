@@ -76,7 +76,10 @@ public class OnlineLibraryFragment extends Fragment {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                         Intent intentToA = new Intent(getActivity(), Youtube.class);
+                        Bundle bud = new Bundle();
+                        bud.putSerializable("listvideos", listVideos);
                         intentToA.putExtra("idVideo", listVideos.get(position).getIdVideo());
+                        intentToA.putExtra("list", bud);
                         startActivity(intentToA);
                     }
                 });

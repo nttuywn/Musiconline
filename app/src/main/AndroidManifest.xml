@@ -25,6 +25,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <receiver android:name=".NotificationBroadCast" >
+            <intent-filter>
+                <action android:name="com.delarostudios.notificationdemo.previous"/>
+                <action android:name="com.delarostudios.notificationdemo.play"/>
+                <action android:name="com.delarostudios.notificationdemo.next"/>
+                <action android:name="com.delarostudios.notificationdemo.pause"/>
+            </intent-filter>
+        </receiver>
         <activity android:name=".Youtube"></activity>
     </application>
 
