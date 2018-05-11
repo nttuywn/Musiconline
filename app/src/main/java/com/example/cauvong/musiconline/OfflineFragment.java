@@ -1,5 +1,8 @@
 package com.example.cauvong.musiconline;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
@@ -71,12 +74,7 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
         super.onViewCreated(view, savedInstanceState);
         ScanMusic sc = new ScanMusic(getActivity());
         listAllSong = sc.getMusic();
-        if (savedInstanceState != null) {
-            Song obj = (Song) savedInstanceState.getSerializable("nowplaying");
-            listSong.add(obj);
-        } else {
-            listSong = sc.getMusic();
-        }
+        listSong = sc.getMusic();
         ScanAlbum scanA = new ScanAlbum();
         listAlbum = scanA.getAlbum(listSong);
         findViews();
@@ -135,6 +133,19 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
                         txtArtistPlaying.setText(song.getArtist());
                         NotificationGenerator.customNotification(getActivity(), song);
                         CustomList adapter = new CustomList(getActivity(), R.layout.list_single, listSong);
+                        listNowPlay.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                play(position);
+                                Song song = listSong.get(position);
+                                imgNowPlaybtm2.setImageBitmap(ga.getAlbumart(Integer.parseInt(song.getImage())));
+                                txtNowPlaybtm2.setText(song.getTitle());
+                                txtArtistPlaying2.setText(song.getArtist());
+                                imgNowPlaybtm.setImageBitmap(ga.getAlbumart(Integer.parseInt(song.getImage())));
+                                txtNowPlaybtm.setText(song.getTitle());
+                                txtArtistPlaying.setText(song.getArtist());
+                            }
+                        });
                         listNowPlay.setAdapter(adapter);
                     }
                 });
@@ -143,6 +154,7 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
                 FragmentTransaction transaction = manager.beginTransaction();
                 transaction.hide(getActivity().getSupportFragmentManager().findFragmentByTag("mylibrary"));
                 transaction.show(getActivity().getSupportFragmentManager().findFragmentByTag("albumsong"));
+                addPreferences();
                 transaction.commit();
             }
         });
@@ -262,6 +274,12 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
 
     }
 
+    private void addPreferences(){
+        SharedPreferences sp = getActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor edit = sp.edit();
+        edit.putString("back", "albumsong");
+        edit.commit();
+    }
 
     private void setSeek(int duration) {
         long minuteEnd = TimeUnit.MILLISECONDS.toMinutes(duration);
@@ -404,7 +422,8 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
     }
 
     private void playing() {
-        play(0);
+        mPlayer.start();
+//        play(0);
         mBtnPlay.setVisibility(View.INVISIBLE);
         mBtnPause.setVisibility(View.VISIBLE);
         setSeek(mPlayer.getDuration());
