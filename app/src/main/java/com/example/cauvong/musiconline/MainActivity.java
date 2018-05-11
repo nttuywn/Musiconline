@@ -77,7 +77,6 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         SharedPreferences sp = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor edit = sp.edit();
-        Set<String> setList = new ArraySet<String>();
         if (id == R.id.online_library) {
             listFragmentBackList.push("online");
             edit.putString("back", " ");
