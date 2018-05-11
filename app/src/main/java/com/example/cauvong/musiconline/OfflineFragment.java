@@ -27,6 +27,7 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -316,6 +317,7 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
         try {
             mPlayer = new MediaPlayer(); // Mỗi lần dùng mới thì phải tạo lại...
             mPlayer.setDataSource(listSong.get(positiion).getPath());
+            currentId = positiion;
             mPlayer.prepare();
             mPlayer.start();
         } catch (IOException e) {
@@ -330,11 +332,20 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
         mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                mBtnPause.setVisibility(View.INVISIBLE);
-                mBtnPlay.setVisibility(View.VISIBLE);
+                if(mBtnRepeat1.getVisibility() == 0) {
+                    repeat1();
+                }
+//                Toast.makeText(getActivity(), mBtnRepeatAll.getVisibility() + "...", Toast.LENGTH_SHORT).show();
+                if(mBtnRepeatAll.getVisibility() == 0) {
+                    repeatAll();
+                }
+                if(!mPlayer.isPlaying()){
+                    mBtnPause.setVisibility(View.INVISIBLE);
+                    mBtnPlay.setVisibility(View.VISIBLE);
+                }
             }
         });
-//        if(mBtnRepeat1.getVisibility() == View.VISIBLE) repeat1();
+
 //        if(mBtnShufferOn.getVisibility() == View.VISIBLE) shuffer();
 //        playNext();
     }
@@ -391,23 +402,26 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
                 playPreveuos();
                 break;
             case R.id.btn_shuffle:
-                shuffer();
+                mBtnShufferOn.setVisibility(View.VISIBLE);
+                mBtnshuffer.setVisibility(View.INVISIBLE);
                 break;
             case R.id.btn_shuffle_on:
-                shufferOn();
+                mBtnShufferOn.setVisibility(View.INVISIBLE);
+                mBtnshuffer.setVisibility(View.VISIBLE);
                 break;
             case R.id.btn_repeat:
                 mBtnRepeat.setVisibility(View.INVISIBLE);
                 mBtnRepeat1.setVisibility(View.VISIBLE);
-                repeat1();
+//                repeat1();
                 break;
             case R.id.btn_repeat_1:
                 mBtnRepeat1.setVisibility(View.INVISIBLE);
                 mBtnRepeatAll.setVisibility(View.VISIBLE);
-                repeatAll();
+//                repeatAll();
                 break;
             case R.id.btn_repeat_all:
-                repeat();
+                mBtnRepeat.setVisibility(View.VISIBLE);
+                mBtnRepeatAll.setVisibility(View.INVISIBLE);
                 break;
             default:
                 break;
@@ -447,17 +461,6 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void shufferOn() {
-        mBtnShufferOn.setVisibility(View.INVISIBLE);
-        mBtnshuffer.setVisibility(View.VISIBLE);
-    }
-
-    private void shuffer() {
-        Collections.shuffle(listSong);
-        mBtnShufferOn.setVisibility(View.VISIBLE);
-        mBtnshuffer.setVisibility(View.INVISIBLE);
-    }
-
     private void repeat() {
         mBtnRepeatAll.setVisibility(View.INVISIBLE);
         mBtnRepeat.setVisibility(View.VISIBLE);
@@ -471,39 +474,68 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
     }
 
     private void repeatAll() {
-        mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                if (currentId < listSong.size() - 1) {
-                    play(++currentId);
-                } else {
-                    currentId = 0;
-                    play(currentId);
-                }
-                if (mBtnRepeatAll.getVisibility() == View.VISIBLE) {
-                    repeatAll();
-                }
+        mPlayer = new MediaPlayer();
+        if(mBtnShufferOn.getVisibility() == 0) {
+            Random rd = new Random();
+            currentId = rd.nextInt(listSong.size() - 1);
+        } else {
+            if (currentId < listSong.size() - 1) {
+                currentId++;
+            } else {
+                currentId = 0;
             }
-        });
+        }
+
+        try {
+            mPlayer.setDataSource(listSong.get(currentId).getPath());
+            mPlayer.prepare();
+            mPlayer.start();
+            setSeek(Integer.parseInt(listSong.get(currentId).getLength()));
+            mHandler.postDelayed(runnable, 100);
+            mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    if(mBtnRepeat1.getVisibility() == 0) {
+                        repeat1();
+                    }
+                    if(mBtnRepeatAll.getVisibility() == 0) {
+                        repeatAll();
+                    }
+                    if(!mPlayer.isPlaying()){
+                        mBtnPause.setVisibility(View.INVISIBLE);
+                        mBtnPlay.setVisibility(View.VISIBLE);
+                    }
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void repeat1() {
-        mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                mPlayer = new MediaPlayer();
-                try {
-                    mPlayer.setDataSource(listSong.get(currentId).getPath());
-                    mPlayer.prepare();
-                    mPlayer.start();
-                    if (mBtnRepeat1.getVisibility() == View.VISIBLE)
+        mPlayer = new MediaPlayer();
+        try {
+            mPlayer.setDataSource(listSong.get(currentId).getPath());
+            mPlayer.prepare();
+            mPlayer.start();
+            mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    if(mBtnRepeat1.getVisibility() == 0) {
                         repeat1();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    }
+                    if(mBtnRepeatAll.getVisibility() == 0) {
+                        repeatAll();
+                    }
+                    if(!mPlayer.isPlaying()){
+                        mBtnPause.setVisibility(View.INVISIBLE);
+                        mBtnPlay.setVisibility(View.VISIBLE);
+                    }
                 }
-            }
-        });
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-
 
 }
