@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.ArraySet;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -46,6 +48,8 @@ public class MainActivity extends AppCompatActivity
         InitFragment();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
     }
 
     @Override
@@ -92,8 +96,13 @@ public class MainActivity extends AppCompatActivity
             edit.putString("back", " ");
             edit.commit();
             changeFragment("playing");
-        } else if (id == R.id.settings) {
-
+        } else if (id == R.id.login) {
+            Intent myIntent = new Intent(this, FacebookActivity.class);
+            startActivity(myIntent);
+        } else if (id == R.id.settings){
+            String profile = getIntent().getStringExtra("profile");
+            TextView txtUsrname = (TextView) findViewById(R.id.txtUserName);
+            txtUsrname.setText(profile);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -122,6 +131,9 @@ public class MainActivity extends AppCompatActivity
         transaction.add(R.id.fr_content_main, offlineFragment, "playing");
         listFragment.add("playing");
         listFragmentBackList.push("playing");
+//        LoginFragment lfg = new LoginFragment();
+//        transaction.add(R.id.fr_content_main, lfg, "login");
+//        transaction.hide(offlineFragment);
         transaction.commitNow();
     }
 

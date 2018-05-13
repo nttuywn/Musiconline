@@ -5,6 +5,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="tab">-----</string>
     <string name="action_settings">Settings</string>
+    <string name="facebook_app_id">437686319990674</string>
+    <string name="fb_login_protocol_scheme">fb437686319990674</string>
 
     <string name="mp.music.default_duration">00:00</string>
 

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 public class ScanMusic {
 
     private Activity ac;
+    private  ArrayList<Song> arrayList = new ArrayList<Song>();
 
     public ScanMusic(Activity ac) {
         this.ac = ac;
@@ -25,9 +26,9 @@ public class ScanMusic {
         Context applicationContext = ac.getApplicationContext();
         ContentResolver contentResolver = applicationContext.getContentResolver();
         Uri songURI = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        Cursor songCursor = contentResolver.query(songURI, null, null, null, null);
+        String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0";
+        Cursor songCursor = contentResolver.query(songURI, null, selection, null, null);
 
-        ArrayList<Song> arrayList = new ArrayList<Song>();
 
         if (songCursor != null && songCursor.moveToFirst()) {
             int songTitle = songCursor.getColumnIndex(MediaStore.Audio.Media.TITLE);
