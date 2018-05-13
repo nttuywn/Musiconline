@@ -40,8 +40,7 @@ public class FacebookActivity extends AppCompatActivity{
         boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
         if(isLoggedIn){
             Intent myIntent = new Intent(getApplicationContext(), MainActivity.class);
-            myIntent.putExtra("profile", Profile.getCurrentProfile().getName());
-
+//            myIntent.putExtra("profile", Profile.getCurrentProfile().getName());
             startActivity(myIntent);
         }
 
@@ -56,7 +55,7 @@ public class FacebookActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(getApplicationContext(), MainActivity.class);
-                myIntent.putExtra("profile", "Guest");
+//                myIntent.putExtra("profile", Profile.getCurrentProfile().getName());
                 startActivity(myIntent);
             }
         });
