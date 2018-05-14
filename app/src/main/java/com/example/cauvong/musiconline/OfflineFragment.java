@@ -197,65 +197,6 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
             }
         });
 
-        imgNowPlaybtm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager manager = getActivity().getSupportFragmentManager();
-                FragmentTransaction transaction = manager.beginTransaction();
-                transaction.show(getActivity().getSupportFragmentManager().findFragmentByTag("playing"));
-                transaction.commit();
-            }
-        });
-
-        txtArtistPlaying.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager manager = getActivity().getSupportFragmentManager();
-                FragmentTransaction transaction = manager.beginTransaction();
-                transaction.show(getActivity().getSupportFragmentManager().findFragmentByTag("playing"));
-                transaction.commit();
-            }
-        });
-
-        txtNowPlaybtm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager manager = getActivity().getSupportFragmentManager();
-                FragmentTransaction transaction = manager.beginTransaction();
-                transaction.show(getActivity().getSupportFragmentManager().findFragmentByTag("playing"));
-                transaction.commit();
-            }
-        });
-
-        imgNowPlaybtm2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager manager = getActivity().getSupportFragmentManager();
-                FragmentTransaction transaction = manager.beginTransaction();
-                transaction.show(getActivity().getSupportFragmentManager().findFragmentByTag("playing"));
-                transaction.commit();
-            }
-        });
-
-        txtArtistPlaying2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager manager = getActivity().getSupportFragmentManager();
-                FragmentTransaction transaction = manager.beginTransaction();
-                transaction.show(getActivity().getSupportFragmentManager().findFragmentByTag("playing"));
-                transaction.commit();
-            }
-        });
-
-        txtNowPlaybtm2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager manager = getActivity().getSupportFragmentManager();
-                FragmentTransaction transaction = manager.beginTransaction();
-                transaction.show(getActivity().getSupportFragmentManager().findFragmentByTag("playing"));
-                transaction.commit();
-            }
-        });
 
         listNowPlay.setAdapter(adapter);
         listSongs.setAdapter(adapter2);
@@ -271,6 +212,12 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
         mBtnShufferOn.setOnClickListener(this);
         mBtnPrev.setOnClickListener(this);
         mBtnNext.setOnClickListener(this);
+        imgNowPlaybtm.setOnClickListener(this);
+        txtNowPlaybtm2.setOnClickListener(this);
+        txtArtistPlaying2.setOnClickListener(this);
+        imgNowPlaybtm2.setOnClickListener(this);
+        txtNowPlaybtm.setOnClickListener(this);
+        txtArtistPlaying.setOnClickListener(this);
         mPlayer = new MediaPlayer();
 
     }
@@ -350,29 +297,6 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
 //        playNext();
     }
 
-    public static Bitmap decodeFile(String f, int WIDTH, int HIGHT) {
-        try {
-            //Decode image size
-            BitmapFactory.Options o = new BitmapFactory.Options();
-            o.inJustDecodeBounds = true;
-            BitmapFactory.decodeFile(f, o);
-
-            //The new size we want to scale to
-            final int REQUIRED_WIDTH = WIDTH;
-            final int REQUIRED_HIGHT = HIGHT;
-            //Find the correct scale value. It should be the power of 2.
-            int scale = 1;
-            while (o.outWidth / scale / 2 >= REQUIRED_WIDTH && o.outHeight / scale / 2 >= REQUIRED_HIGHT)
-                scale *= 2;
-
-            //Decode with inSampleSize
-            BitmapFactory.Options o2 = new BitmapFactory.Options();
-            o2.inSampleSize = scale;
-            return BitmapFactory.decodeFile(f, o2);
-        } catch (Exception e) {
-        }
-        return null;
-    }
 
     private Runnable runnable = new Runnable() {
         @Override
@@ -412,22 +336,44 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
             case R.id.btn_repeat:
                 mBtnRepeat.setVisibility(View.INVISIBLE);
                 mBtnRepeat1.setVisibility(View.VISIBLE);
-//                repeat1();
                 break;
             case R.id.btn_repeat_1:
                 mBtnRepeat1.setVisibility(View.INVISIBLE);
                 mBtnRepeatAll.setVisibility(View.VISIBLE);
-//                repeatAll();
                 break;
             case R.id.btn_repeat_all:
                 mBtnRepeat.setVisibility(View.VISIBLE);
                 mBtnRepeatAll.setVisibility(View.INVISIBLE);
+                break;
+            case R.id.imgNowPlaybtm:
+                changeFragment();
+                break;
+            case R.id.txtNowPlaybtm:
+                changeFragment();
+                break;
+            case R.id.imgNowPlaybtm2:
+                changeFragment();
+                break;
+            case R.id.txtNowPlaybtm2:
+                changeFragment();
+                break;
+            case R.id.txtArtistPlaying:
+                changeFragment();
+                break;
+            case R.id.txtArtistPlaying2:
+                changeFragment();
                 break;
             default:
                 break;
         }
     }
 
+    private void changeFragment(){
+        FragmentManager manager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        transaction.show(getActivity().getSupportFragmentManager().findFragmentByTag("playing"));
+        transaction.commit();
+    }
 
     private void pauseSong() {
         mPlayer.pause();
@@ -459,18 +405,6 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
             currentId = listSong.size() - 1;
             play(currentId);
         }
-    }
-
-    private void repeat() {
-        mBtnRepeatAll.setVisibility(View.INVISIBLE);
-        mBtnRepeat.setVisibility(View.VISIBLE);
-        mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                mBtnPause.setVisibility(View.INVISIBLE);
-                mBtnPlay.setVisibility(View.VISIBLE);
-            }
-        });
     }
 
     private void repeatAll() {
