@@ -1,11 +1,12 @@
 package com.example.cauvong.musiconline;
 
-import android.app.Notification;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -18,11 +19,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.ArraySet;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.facebook.AccessToken;
 import com.facebook.Profile;
+import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
-import java.util.Set;
 import java.util.Stack;
 
 public class MainActivity extends AppCompatActivity
@@ -31,6 +36,7 @@ public class MainActivity extends AppCompatActivity
     public static Context contextOfApplication;
     public Stack<String> listFragmentBackList = new Stack<>();
     private ArrayList<String> listFragment = new ArrayList<>();
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +51,26 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-        InitFragment();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        InitFragment();
+    }
 
-
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        ImageView imgUser = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.imgUser);
+        TextView txtUsrname = (TextView) navigationView.getHeaderView(0).findViewById(R.id.txtUserName);
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+        if(isLoggedIn){
+            txtUsrname.setText(Profile.getCurrentProfile().getName());
+            Picasso.with(getApplicationContext()).load(Profile.getCurrentProfile().getProfilePictureUri(100,100).toString()).fit().into(imgUser);
+        } else {
+            txtUsrname.setText("Guest");
+            Picasso.with(getApplicationContext()).load("https://i1.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png?fit=256%2C256&quality=100").fit().into(imgUser);
+        }
     }
 
     @Override
@@ -100,12 +121,9 @@ public class MainActivity extends AppCompatActivity
             Intent myIntent = new Intent(this, FacebookActivity.class);
             startActivity(myIntent);
         } else if (id == R.id.settings){
-            TextView txtUsrname = (TextView) findViewById(R.id.txtUserName);
-            txtUsrname.setText(Profile.getCurrentProfile().getName());
+
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
@@ -131,6 +149,7 @@ public class MainActivity extends AppCompatActivity
         listFragment.add("playing");
         listFragmentBackList.push("playing");
         transaction.commitNow();
+
     }
 
     public void changeFragment(String nameFragment){
@@ -146,5 +165,5 @@ public class MainActivity extends AppCompatActivity
         }
         transaction.commit();
     }
-
+    
 }

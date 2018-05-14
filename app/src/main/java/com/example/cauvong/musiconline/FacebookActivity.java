@@ -60,8 +60,7 @@ public class FacebookActivity extends AppCompatActivity{
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Intent myIntent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(myIntent);
+                btnNlg.setText("Continue");
             }
 
             @Override

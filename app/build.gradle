@@ -37,4 +37,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
     compile 'com.facebook.android:facebook-android-sdk:4.19.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+
 }
