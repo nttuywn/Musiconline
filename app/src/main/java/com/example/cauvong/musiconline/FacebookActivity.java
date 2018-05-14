@@ -19,7 +19,6 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
-import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
@@ -40,7 +39,6 @@ public class FacebookActivity extends AppCompatActivity{
         boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
         if(isLoggedIn){
             Intent myIntent = new Intent(getApplicationContext(), MainActivity.class);
-//            myIntent.putExtra("profile", Profile.getCurrentProfile().getName());
             startActivity(myIntent);
         }
 
@@ -55,7 +53,6 @@ public class FacebookActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(getApplicationContext(), MainActivity.class);
-//                myIntent.putExtra("profile", Profile.getCurrentProfile().getName());
                 startActivity(myIntent);
             }
         });
@@ -64,7 +61,6 @@ public class FacebookActivity extends AppCompatActivity{
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Intent myIntent = new Intent(getApplicationContext(), MainActivity.class);
-                myIntent.putExtra("profile", Profile.getCurrentProfile().getName());
                 startActivity(myIntent);
             }
 

@@ -20,7 +20,7 @@ import android.util.ArraySet;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.facebook.Profile;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.Stack;
@@ -100,9 +100,8 @@ public class MainActivity extends AppCompatActivity
             Intent myIntent = new Intent(this, FacebookActivity.class);
             startActivity(myIntent);
         } else if (id == R.id.settings){
-            String profile = getIntent().getStringExtra("profile");
             TextView txtUsrname = (TextView) findViewById(R.id.txtUserName);
-            txtUsrname.setText(profile);
+            txtUsrname.setText(Profile.getCurrentProfile().getName());
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -131,9 +130,6 @@ public class MainActivity extends AppCompatActivity
         transaction.add(R.id.fr_content_main, offlineFragment, "playing");
         listFragment.add("playing");
         listFragmentBackList.push("playing");
-//        LoginFragment lfg = new LoginFragment();
-//        transaction.add(R.id.fr_content_main, lfg, "login");
-//        transaction.hide(offlineFragment);
         transaction.commitNow();
     }
 
