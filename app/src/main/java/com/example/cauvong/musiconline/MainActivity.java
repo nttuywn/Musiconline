@@ -1,6 +1,7 @@
 package com.example.cauvong.musiconline;
 
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,6 +21,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.ArraySet;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,7 +43,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity
     protected void onResume()
     {
         super.onResume();
+        Toast.makeText(getApplicationContext(), "Dasdas", Toast.LENGTH_SHORT).show();
         ImageView imgUser = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.imgUser);
         TextView txtUsrname = (TextView) navigationView.getHeaderView(0).findViewById(R.id.txtUserName);
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
@@ -121,12 +123,11 @@ public class MainActivity extends AppCompatActivity
             Intent myIntent = new Intent(this, FacebookActivity.class);
             startActivity(myIntent);
         } else if (id == R.id.settings){
-
+//
         }
 
         return true;
     }
-
 
     public static Context getContextOfApplication() {
         return contextOfApplication;

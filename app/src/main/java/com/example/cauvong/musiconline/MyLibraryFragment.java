@@ -75,23 +75,7 @@ public class MyLibraryFragment extends Fragment {
             } else {
                 ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSION_REQUEST);
             }
-        } else {
-            ScanMusic sc = new ScanMusic(getActivity());
-            listSongs = sc.getMusic();
-            doStuff();
         }
-    }
-
-    public void doStuff() {
-
-//        GridView gridView = (GridView) getView().findViewById(R.id.gridALbums);
-//        ArrayList<Album> listAlbum = getAlbum(listSongs);
-//        CustomGrid gridAdapter = new CustomGrid(getActivity(), R.layout.grid_single, listAlbum);
-//
-//        ga = new GetArt(getActivity());
-//        gridView.setAdapter(gridAdapter);
-
-
     }
 
 
@@ -102,7 +86,6 @@ public class MyLibraryFragment extends Fragment {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                         Toast.makeText(getActivity(), "Permission Granted!", Toast.LENGTH_SHORT).show();
-                        doStuff();
                     } else {
                         Toast.makeText(getActivity(), "No Permission Granted!", Toast.LENGTH_SHORT).show();
                         getActivity().finish();

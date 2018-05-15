@@ -1,17 +1,22 @@
 package com.example.cauvong.musiconline;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,6 +63,7 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
     private GridView gridView;
     private TextView txtNotiSongName;
     private ImageView imgNotiSongImg;
+    private Intent myService;
 
 
     @Nullable
@@ -132,7 +138,7 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
                         imgNowPlaybtm.setImageBitmap(ga.getAlbumart(Integer.parseInt(song.getImage())));
                         txtNowPlaybtm.setText(song.getTitle());
                         txtArtistPlaying.setText(song.getArtist());
-                        NotificationGenerator.customNotification(getActivity(), song);
+//                        NotificationGenerator.customNotification(getActivity(), song);
                         CustomList adapter = new CustomList(getActivity(), R.layout.list_single, listSong);
                         listNowPlay.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
@@ -173,9 +179,7 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
                 imgNowPlaybtm2.setImageBitmap(image);
                 txtNowPlaybtm2.setText(song.getTitle());
                 txtArtistPlaying2.setText(song.getArtist());
-                NotificationGenerator.customNotification(getActivity(), song);
-                CustomList adapter = new CustomList(getActivity(), R.layout.list_single, listSong);
-                listNowPlay.setAdapter(adapter);
+//                NotificationGenerator.customNotification(getActivity(), song);
             }
         });
 
@@ -191,7 +195,7 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
                 imgNowPlaybtm2.setImageBitmap(ga.getAlbumart(Integer.parseInt(song.getImage())));
                 txtNowPlaybtm2.setText(song.getTitle());
                 txtArtistPlaying2.setText(song.getArtist());
-                NotificationGenerator.customNotification(getActivity(), song);
+//                NotificationGenerator.customNotification(getActivity(), song);
                 CustomList adapter = new CustomList(getActivity(), R.layout.list_single, listSong);
                 listSongs.setAdapter(adapter);
             }
@@ -239,6 +243,13 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
                     mPlayer.seekTo(progress);
+                    getActivity().stopService(new Intent(getActivity(), MyService.class));
+                    myService = new Intent(getActivity(), MyService.class);
+                    myService.putExtra("listsong", listSong);
+                    myService.putExtra("seek", progress);
+                    myService.putExtra("song", currentId);
+                    myService.putExtra("haveseek", true);
+                    getActivity().startService(myService);
                 }
             }
 
@@ -255,22 +266,23 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
     }
 
     private void play(int positiion) {
-        if (mPlayer.isPlaying()) {
-            mPlayer.stop();
-            mPlayer.release();
-            mPlayer = null; // dùng xong xóa,,,,
-            mHandler.removeCallbacks(runnable);
-        }
+        getActivity().stopService(new Intent(getActivity(), MyService.class));
+        myService = new Intent(getActivity(), MyService.class);
+        myService.putExtra("listsong", listSong);
+        myService.putExtra("song", positiion);
+        myService.putExtra("repeat", mBtnRepeat1.getVisibility());
+        myService.putExtra("repeatall", mBtnRepeatAll.getVisibility());
+        getActivity().startService(myService);
+        currentId = positiion;
         try {
             mPlayer = new MediaPlayer(); // Mỗi lần dùng mới thì phải tạo lại...
             mPlayer.setDataSource(listSong.get(positiion).getPath());
-            currentId = positiion;
             mPlayer.prepare();
             mPlayer.start();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        mPlayer.setVolume(0,0);
         mBtnPlay.setVisibility(View.INVISIBLE);
         mBtnPause.setVisibility(View.VISIBLE);
         setSeek(Integer.parseInt(listSong.get(positiion).getLength()));
@@ -282,7 +294,6 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
                 if(mBtnRepeat1.getVisibility() == 0) {
                     repeat1();
                 }
-//                Toast.makeText(getActivity(), mBtnRepeatAll.getVisibility() + "...", Toast.LENGTH_SHORT).show();
                 if(mBtnRepeatAll.getVisibility() == 0) {
                     repeatAll();
                 }
@@ -293,8 +304,6 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
             }
         });
 
-//        if(mBtnShufferOn.getVisibility() == View.VISIBLE) shuffer();
-//        playNext();
     }
 
 
@@ -377,13 +386,19 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
 
     private void pauseSong() {
         mPlayer.pause();
+        getActivity().stopService(new Intent(getActivity(), MyService.class));
         mBtnPlay.setVisibility(View.VISIBLE);
         mBtnPause.setVisibility(View.INVISIBLE);
     }
 
     private void playing() {
         mPlayer.start();
-//        play(0);
+        myService = new Intent(getActivity(), MyService.class);
+        myService.putExtra("listsong", listSong);
+        myService.putExtra("seek", mPlayer.getCurrentPosition());
+        myService.putExtra("song", currentId);
+        myService.putExtra("haveseek", true);
+        getActivity().startService(myService);
         mBtnPlay.setVisibility(View.INVISIBLE);
         mBtnPause.setVisibility(View.VISIBLE);
         setSeek(mPlayer.getDuration());
@@ -419,57 +434,44 @@ public class OfflineFragment extends Fragment implements View.OnClickListener {
                 currentId = 0;
             }
         }
-
-        try {
-            mPlayer.setDataSource(listSong.get(currentId).getPath());
-            mPlayer.prepare();
-            mPlayer.start();
-            setSeek(Integer.parseInt(listSong.get(currentId).getLength()));
-            mHandler.postDelayed(runnable, 100);
-            mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    if(mBtnRepeat1.getVisibility() == 0) {
-                        repeat1();
-                    }
-                    if(mBtnRepeatAll.getVisibility() == 0) {
-                        repeatAll();
-                    }
-                    if(!mPlayer.isPlaying()){
-                        mBtnPause.setVisibility(View.INVISIBLE);
-                        mBtnPlay.setVisibility(View.VISIBLE);
-                    }
+        play(currentId);
+        setSeek(Integer.parseInt(listSong.get(currentId).getLength()));
+        mHandler.postDelayed(runnable, 100);
+        mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                if(mBtnRepeat1.getVisibility() == 0) {
+                    repeat1();
                 }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                if(mBtnRepeatAll.getVisibility() == 0) {
+                    repeatAll();
+                }
+                if(!mPlayer.isPlaying()){
+                    mBtnPause.setVisibility(View.INVISIBLE);
+                    mBtnPlay.setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
 
     private void repeat1() {
         mPlayer = new MediaPlayer();
-        try {
-            mPlayer.setDataSource(listSong.get(currentId).getPath());
-            mPlayer.prepare();
-            mPlayer.start();
-            mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    if(mBtnRepeat1.getVisibility() == 0) {
-                        repeat1();
-                    }
-                    if(mBtnRepeatAll.getVisibility() == 0) {
-                        repeatAll();
-                    }
-                    if(!mPlayer.isPlaying()){
-                        mBtnPause.setVisibility(View.INVISIBLE);
-                        mBtnPlay.setVisibility(View.VISIBLE);
-                    }
+        play(currentId);
+        mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                if(mBtnRepeat1.getVisibility() == 0) {
+                    repeat1();
                 }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                if(mBtnRepeatAll.getVisibility() == 0) {
+                    repeatAll();
+                }
+                if(!mPlayer.isPlaying()){
+                    mBtnPause.setVisibility(View.INVISIBLE);
+                    mBtnPlay.setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
 
 }
