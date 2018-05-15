@@ -43,7 +43,7 @@ public class MyService extends Service {
         }
         intent.putExtra("haveseek", true);
         intent.putExtra("seek",mPlayer.getCurrentPosition());
-        Intent send = new Intent(getApplicationContext(), MainActivity.class);
+//        Intent send = new Intent(getApplicationContext(), MainActivity.class);
 //        send.putExtra()
 //        sendBroadcast(new Intent(""));
         startForeground(1, NotificationGenerator.customNotification(getApplicationContext(), listSong.get(position)));

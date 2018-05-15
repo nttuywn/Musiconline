@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity
     protected void onResume()
     {
         super.onResume();
-        Toast.makeText(getApplicationContext(), "Dasdas", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(), "Dasdas", Toast.LENGTH_SHORT).show();
         ImageView imgUser = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.imgUser);
         TextView txtUsrname = (TextView) navigationView.getHeaderView(0).findViewById(R.id.txtUserName);
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
